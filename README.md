@@ -31,7 +31,9 @@ A simple web application to download YouTube videos using Node.js, Express, and 
 
 3. **Enter the YouTube Video URL** and click "Show Preview".
 
-4. **Click "Download"** to download the video after previewing it.
+4. **Select video quality** from the dropdown menu.
+
+5. **Click "Download"** to download the video after previewing it.
 
 ## Important Considerations
 

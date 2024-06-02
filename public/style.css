@@ -22,6 +22,12 @@ button {
 button:hover {
   background-color: #45a049;
 }
-#preview {
+#preview,
+#qualityOptions {
+  margin-top: 20px;
+}
+select {
+  padding: 10px;
+  font-size: 16px;
   margin-top: 20px;
 }

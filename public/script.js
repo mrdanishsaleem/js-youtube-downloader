@@ -1,4 +1,4 @@
-function showPreview() {
+async function showPreview() {
   const url = document.getElementById("videoURL").value;
   if (!url) {
     alert("Please enter a valid URL");
@@ -11,31 +11,41 @@ function showPreview() {
     return;
   }
 
-  fetch(
-    `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoID}&format=json`
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch video information");
+  try {
+    const response = await fetch(`/info?url=${encodeURIComponent(url)}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch video information");
+    }
+
+    const info = await response.json();
+    const previewDiv = document.getElementById("preview");
+    previewDiv.innerHTML = `<h3>${info.videoDetails.title}</h3><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoID}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+
+    const qualityOptions = document.getElementById("quality");
+    qualityOptions.innerHTML = "";
+    info.formats.forEach((format) => {
+      if (format.qualityLabel) {
+        const option = document.createElement("option");
+        option.value = format.itag;
+        option.text = format.qualityLabel;
+        qualityOptions.appendChild(option);
       }
-      return response.json();
-    })
-    .then((data) => {
-      const previewDiv = document.getElementById("preview");
-      previewDiv.innerHTML = `<h3>${data.title}</h3><iframe width="560" height="315" src="https://www.youtube.com/embed/${videoID}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-      document.getElementById("downloadBtn").style.display = "inline-block";
-    })
-    .catch((error) => {
-      alert(
-        "Failed to load video preview. Please check the URL and try again."
-      );
-      console.error("Error:", error);
     });
+
+    document.getElementById("qualityOptions").style.display = "block";
+    document.getElementById("downloadBtn").style.display = "inline-block";
+  } catch (error) {
+    alert("Failed to load video preview. Please check the URL and try again.");
+    console.error("Error:", error);
+  }
 }
 
 function downloadVideo() {
   const url = document.getElementById("videoURL").value;
-  window.location.href = `/download?url=${encodeURIComponent(url)}`;
+  const quality = document.getElementById("quality").value;
+  window.location.href = `/download?url=${encodeURIComponent(
+    url
+  )}&quality=${quality}`;
 }
 
 function extractVideoID(url) {
