@@ -1,6 +1,6 @@
 # YouTube Downloader
 
-A simple Node.js application to download YouTube videos using the `ytdl-core` library.
+A simple web application to download YouTube videos using Node.js, Express, and the `ytdl-core` library.
 
 ## Prerequisites
 
@@ -15,63 +15,30 @@ A simple Node.js application to download YouTube videos using the `ytdl-core` li
     cd youtube-downloader
     ```
 
-2. **Initialize the Node.js project**:
+2. **Install dependencies**:
     ```sh
-    npm init -y
-    ```
-
-3. **Install dependencies**:
-    ```sh
-    npm install ytdl-core
+    npm install
     ```
 
 ## Usage
 
-1. **Create the main script file**:
-
-    Create a file named `index.js` in your project directory and add the following code:
-
-    ```javascript
-    const ytdl = require('ytdl-core');
-    const fs = require('fs');
-    const readline = require('readline');
-
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-
-    rl.question('Enter the YouTube video URL: ', (url) => {
-        if (ytdl.validateURL(url)) {
-            const videoID = ytdl.getURLVideoID(url);
-            ytdl.getInfo(videoID).then(info => {
-                const title = info.videoDetails.title.replace(/[^\w\s]/gi, '');
-                const filePath = `./${title}.mp4`;
-                const videoStream = ytdl(url, { quality: 'highest' });
-
-                videoStream.pipe(fs.createWriteStream(filePath));
-                videoStream.on('end', () => {
-                    console.log(`Downloaded: ${title}`);
-                    rl.close();
-                });
-            });
-        } else {
-            console.log('Invalid YouTube URL');
-            rl.close();
-        }
-    });
-    ```
-
-2. **Run the script**:
+1. **Start the server**:
     ```sh
-    node index.js
+    node server.js
     ```
 
-3. **Input the YouTube Video URL** when prompted.
+2. **Open your browser and navigate to**: [http://localhost:3000](http://localhost:3000)
 
-## Example
+3. **Enter the YouTube Video URL** and click "Show Preview".
 
-```sh
-$ node index.js
-Enter the YouTube video URL: https://www.youtube.com/watch?v=example
-Downloaded: Example Video Title
+4. **Click "Download"** to download the video after previewing it.
+
+## Important Considerations
+
+- **Legal Compliance**: Ensure that you comply with YouTube's terms of service and copyright laws. Downloading videos from YouTube without permission can be illegal and against YouTube's policies.
+- **API Limits**: Be aware of any usage limits imposed by the `ytdl-core` library and YouTube's API.
+- **Error Handling**: The script provided is basic and may need additional error handling for production use.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

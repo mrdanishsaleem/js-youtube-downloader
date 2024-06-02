@@ -1,7 +1,7 @@
 {
   "name": "js-youtube-downloader",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple Node.js application to download YouTube videos using the `ytdl-core` library.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.19.2",
     "ytdl-core": "^4.11.5"
   }
 }
